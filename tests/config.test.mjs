@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
@@ -57,5 +57,13 @@ sensors:
   it('throws when file is missing', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sensors-'));
     expect(() => loadConfig(dir)).toThrow(/sensors init/);
+  });
+  it('throws on wrong version', () => {
+    const dir = tmpProject('version: 2\nsensors: []\n');
+    expect(() => loadConfig(dir)).toThrow(/version: 1/);
+  });
+  it('throws when a sensor is missing name or command', () => {
+    const dir = tmpProject('version: 1\nsensors:\n  - name: incomplete\n');
+    expect(() => loadConfig(dir)).toThrow(/name.*command|command.*name/i);
   });
 });
