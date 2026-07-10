@@ -12,4 +12,14 @@ describe('parseArgs', () => {
   it('handles empty argv', () => {
     expect(parseArgs([]).cmd).toBe(null);
   });
+  it('treats leading flag as flag, not command', () => {
+    const { cmd, flags } = parseArgs(['--version']);
+    expect(cmd).toBe(null);
+    expect(flags.get('version')).toBe(true);
+  });
+  it('treats leading --help as flag, not command', () => {
+    const { cmd, flags } = parseArgs(['--help']);
+    expect(cmd).toBe(null);
+    expect(flags.get('help')).toBe(true);
+  });
 });

@@ -4,7 +4,15 @@ import { createRequire } from 'node:module';
 const VALUE_FLAGS = new Set(['level', 'changed']);
 
 export function parseArgs(argv) {
-  const [cmd = null, ...rest] = argv;
+  let cmd = null;
+  let rest = argv;
+
+  // If argv[0] starts with --, treat it as a flag, not a command
+  if (argv.length > 0 && !argv[0].startsWith('--')) {
+    cmd = argv[0];
+    rest = argv.slice(1);
+  }
+
   const flags = new Map();
   const positional = [];
   for (let i = 0; i < rest.length; i++) {
@@ -25,13 +33,13 @@ export function parseArgs(argv) {
 
 async function main() {
   const { cmd, flags, positional } = parseArgs(process.argv.slice(2));
-  if (cmd === null || flags.has('help')) {
-    console.log('Usage: sensors <init|check|snapshot|status|history|trigger> [flags]');
-    return;
-  }
   if (flags.has('version')) {
     const require = createRequire(import.meta.url);
     console.log(require('../package.json').version);
+    return;
+  }
+  if (cmd === null || flags.has('help')) {
+    console.log('Usage: sensors <init|check|snapshot|status|history|trigger> [flags]');
     return;
   }
   console.error(`Unknown command: ${cmd}`); // commands wired in later tasks
