@@ -1,0 +1,6 @@
+[
+  { "filePath": "/repo/server/index.ts", "messages": [
+      { "ruleId": "no-console", "severity": 1, "message": "Unexpected console statement.", "line": 19, "column": 3 }
+    ], "errorCount": 0, "warningCount": 1 },
+  { "filePath": "/repo/server/ok.ts", "messages": [], "errorCount": 0, "warningCount": 0 }
+]

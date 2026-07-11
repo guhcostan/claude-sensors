@@ -1,6 +1,8 @@
 import defaultParser from './default.mjs';
+import eslintParser from './eslint.mjs';
 
 const registry = new Map([['default', defaultParser]]);
+registry.set('eslint', eslintParser);
 
 export function registerParser(name, fn) {
   registry.set(name, fn);
