@@ -42,6 +42,13 @@ async function main() {
     console.log('Usage: sensors <init|check|snapshot|status|history|trigger> [flags]');
     return;
   }
+  const cwd = process.cwd();
+  if (cmd === 'init') {
+    const { runInit } = await import('./commands/init.mjs');
+    const { created, sensors } = runInit(cwd);
+    console.log(created ? `Created .sensors/sensors.yaml (sensors: ${sensors.join(', ') || 'none detected'})` : '.sensors/sensors.yaml already exists — not overwriting');
+    return;
+  }
   console.error(`Unknown command: ${cmd}`); // commands wired in later tasks
   process.exitCode = 1;
 }
