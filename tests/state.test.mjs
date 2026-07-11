@@ -33,6 +33,12 @@ describe('computeEvent', () => {
     expect(computeEvent(res(), res({ status: 'failure', score: 3 }), base)).toBe('regression'));
   it('recovery failure→success', () =>
     expect(computeEvent(res({ status: 'failure', score: 3 }), res(), base)).toBe('recovery'));
+  it('regression when sensor starts erroring (success→error)', () =>
+    expect(computeEvent(res(), res({ status: 'error', score: null }), base)).toBe('regression'));
+  it('recovery from error to success', () =>
+    expect(computeEvent(res({ status: 'error', score: null }), res(), base)).toBe('recovery'));
+  it('steady across repeated errors', () =>
+    expect(computeEvent(res({ status: 'error', score: null }), res({ status: 'error', score: null }), base)).toBe('steady'));
   it('worsening on higher score (direction lower)', () =>
     expect(computeEvent(res({ status: 'failure', score: 1 }), res({ status: 'failure', score: 4 }), base)).toBe('worsening'));
   it('improvement on lower score', () =>

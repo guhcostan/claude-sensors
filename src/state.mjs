@@ -27,8 +27,10 @@ export function updateState(cwd, results) {
 
 export function computeEvent(prev, curr, { threshold = null, direction = 'lower' } = {}) {
   if (!prev) return 'initial';
-  if (prev.status === 'success' && curr.status === 'failure') return 'regression';
-  if (prev.status === 'failure' && curr.status === 'success') return 'recovery';
+  const prevOk = prev.status === 'success';
+  const currOk = curr.status === 'success';
+  if (prevOk && !currOk) return 'regression';
+  if (!prevOk && currOk) return 'recovery';
   if (prev.score == null || curr.score == null || prev.score === curr.score) {
     return isBelowThreshold(curr, threshold, direction) ? 'below_threshold' : 'steady';
   }
