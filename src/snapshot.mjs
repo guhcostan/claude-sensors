@@ -23,6 +23,7 @@ export function compareToSnapshot(snapshot, result) {
 }
 
 export function isRegression(snapshot, result, sensorCfg) {
+  if (result.status === 'error') return false; // fail-open: a sensor that could not run never blocks
   const prev = snapshot?.results?.[result.sensor];
   if (!prev) return false;
   if (prev.status === 'success' && result.status === 'failure') return true;

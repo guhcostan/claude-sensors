@@ -46,4 +46,7 @@ describe('isRegression', () => {
   it('no snapshot entry → not a regression', () => {
     expect(isRegression(snap, res({ sensor: 'ghost', status: 'failure' }), cfg({ name: 'ghost' }))).toBe(false);
   });
+  it('error status never counts as regression (fail-open)', () => {
+    expect(isRegression(snap, res({ status: 'error', score: 10 }), cfg())).toBe(false);
+  });
 });
