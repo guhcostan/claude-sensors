@@ -1,0 +1,10 @@
+{
+  "numTotalTests": 4, "numPassedTests": 3, "numFailedTests": 1, "success": false,
+  "testResults": [
+    { "name": "/repo/tests/math.test.ts", "status": "failed",
+      "assertionResults": [
+        { "status": "passed", "title": "adds" },
+        { "status": "failed", "title": "divides", "failureMessages": ["expected 2 to be 3"] }
+      ] }
+  ]
+}
