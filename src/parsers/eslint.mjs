@@ -5,6 +5,9 @@ export default function eslintParser({ stdout = '', resultFileContent = null }) 
   } catch {
     return { status: 'error', detail: 'could not parse eslint JSON output' };
   }
+  if (!Array.isArray(files)) {
+    return { status: 'error', detail: 'could not parse eslint JSON output' };
+  }
   const findings = files.flatMap((f) =>
     f.messages.map((m) => ({
       file: f.filePath,

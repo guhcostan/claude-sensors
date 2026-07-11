@@ -20,4 +20,7 @@ describe('eslint parser', () => {
   it('error on unparseable output', () => {
     expect(parse({ stdout: 'not json', stderr: '', exitCode: 2 }).status).toBe('error');
   });
+  it('error on valid JSON that is not an eslint report array', () => {
+    expect(parse({ stdout: '{"messages":[]}', stderr: '', exitCode: 1 }).status).toBe('error');
+  });
 });
