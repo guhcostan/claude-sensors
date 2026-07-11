@@ -45,4 +45,12 @@ describe('runSensor', () => {
     const r = await runSensor(sensor({ parser: 'nope' }), { cwd });
     expect(r.status).toBe('error');
   });
+  it('timeout kills the whole process tree', async () => {
+    const marker = path.join(cwd, 'orphan-marker.txt');
+    const cmd = `node -e "setTimeout(() => require('node:fs').writeFileSync('${'{'}MARKER}', 'alive'), 1500)" & wait`.replace('{MARKER}', marker.replaceAll('\\\\', '/'));
+    const r = await runSensor(sensor({ command: cmd, timeout: 300 }), { cwd });
+    expect(r.status).toBe('error');
+    await new Promise((res) => setTimeout(res, 2000));
+    expect(fs.existsSync(marker)).toBe(false);
+  });
 });

@@ -33,24 +33,30 @@ export async function runSensors(sensors, opts) {
 
 function execShell(command, cwd, timeout) {
   return new Promise((resolve) => {
-    const child = spawn(command, { cwd, shell: true, stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawn(command, { cwd, shell: true, stdio: ['ignore', 'pipe', 'pipe'], detached: true });
     let stdout = '';
     let stderr = '';
     let settled = false;
+    const killTree = () => {
+      try { process.kill(-child.pid, 'SIGKILL'); } catch { try { child.kill('SIGKILL'); } catch {} }
+    };
     const timer = setTimeout(() => {
+      if (settled) return;
       settled = true;
-      child.kill('SIGKILL');
+      killTree();
       resolve({ stdout, stderr, exitCode: null, timedOut: true });
     }, timeout);
     child.stdout.on('data', (d) => { stdout += d; });
     child.stderr.on('data', (d) => { stderr += d; });
     child.on('error', (err) => {
       if (settled) return;
+      settled = true;
       clearTimeout(timer);
       resolve({ stdout, stderr: String(err), exitCode: null, timedOut: false });
     });
     child.on('close', (code) => {
       if (settled) return;
+      settled = true;
       clearTimeout(timer);
       resolve({ stdout, stderr, exitCode: code, timedOut: false });
     });
