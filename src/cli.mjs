@@ -49,6 +49,27 @@ async function main() {
     console.log(created ? `Created .sensors/sensors.yaml (sensors: ${sensors.join(', ') || 'none detected'})` : '.sensors/sensors.yaml already exists — not overwriting');
     return;
   }
+  if (cmd === 'check') {
+    const { runCheck } = await import('./commands/check.mjs');
+    const { results, regressions, output } = await runCheck(cwd, {
+      all: flags.has('all'),
+      level: flags.get('level') ?? null,
+      changed: flags.get('changed') ?? null,
+      agent: flags.has('agent'),
+      json: flags.has('json'),
+    });
+    console.log(output);
+    if (flags.has('strict') && (regressions.length > 0 || results.some((r) => r.status === 'failure'))) {
+      process.exitCode = 1;
+    }
+    return;
+  }
+  if (cmd === 'trigger') {
+    const { runTrigger } = await import('./commands/check.mjs');
+    const r = await runTrigger(cwd, positional[0]);
+    console.log(`${r.sensor}: ${r.status.toUpperCase()} (${r.detail})`);
+    return;
+  }
   console.error(`Unknown command: ${cmd}`); // commands wired in later tasks
   process.exitCode = 1;
 }
