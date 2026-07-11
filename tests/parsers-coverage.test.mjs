@@ -15,4 +15,15 @@ describe('coverage parser', () => {
   it('error when result file missing', () => {
     expect(parse({ stdout: '', stderr: '', exitCode: 0, resultFileContent: null }).status).toBe('error');
   });
+  it('error on valid JSON that is not an object', () => {
+    expect(parse({ stdout: '', stderr: '', exitCode: 0, resultFileContent: 'null' }).status).toBe('error');
+  });
+  it('skips null file entries', () => {
+    const r = parse({ stdout: '', stderr: '', exitCode: 0, resultFileContent: '{"a": null, "b": {"s": {"0": 1}}}' });
+    expect(r.status).toBe('success');
+    expect(r.score).toBe(100);
+  });
+  it('error on unparseable JSON', () => {
+    expect(parse({ stdout: '', stderr: '', exitCode: 0, resultFileContent: '{broken' }).status).toBe('error');
+  });
 });

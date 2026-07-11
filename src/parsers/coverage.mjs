@@ -6,9 +6,11 @@ export default function coverageParser({ resultFileContent = null }) {
   } catch {
     return { status: 'error', detail: 'could not parse coverage-final.json' };
   }
+  if (!files || typeof files !== 'object') return { status: 'error', detail: 'could not parse coverage-final.json' };
   let total = 0;
   let covered = 0;
   for (const f of Object.values(files)) {
+    if (!f || typeof f !== 'object') continue;
     for (const hits of Object.values(f.s ?? {})) {
       total += 1;
       if (hits > 0) covered += 1;
