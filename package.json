@@ -4,6 +4,7 @@
   "description": "Maintainability sensors sidecar for coding agents",
   "type": "module",
   "bin": { "sensors": "./src/cli.mjs" },
+  "files": ["src", "README.md"],
   "scripts": { "test": "vitest run" },
   "engines": { "node": ">=20" },
   "license": "MIT",
