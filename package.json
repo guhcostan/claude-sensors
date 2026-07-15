@@ -1,0 +1,13 @@
+{
+  "name": "claude-sensors",
+  "version": "0.1.0",
+  "description": "Maintainability sensors sidecar for coding agents",
+  "type": "module",
+  "bin": { "sensors": "./src/cli.mjs" },
+  "files": ["src", "README.md"],
+  "scripts": { "test": "vitest run" },
+  "engines": { "node": ">=20" },
+  "license": "MIT",
+  "dependencies": { "yaml": "^2.4.0" },
+  "devDependencies": { "vitest": "^3.0.0" }
+}

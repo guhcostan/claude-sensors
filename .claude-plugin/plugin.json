@@ -1,0 +1,12 @@
+{
+  "name": "claude-sensors",
+  "version": "0.1.0",
+  "description": "Maintainability sensors for coding agents — continuous lint/type/test/coverage feedback wired into hooks, with self-correction guidance and Stop-time regression blocking.",
+  "author": { "name": "Gustavo Costa" },
+  "homepage": "https://github.com/guhcostan/claude-sensors",
+  "repository": "https://github.com/guhcostan/claude-sensors",
+  "license": "MIT",
+  "keywords": ["sensors", "lint", "testing", "coverage", "maintainability", "hooks", "tdd"],
+  "commands": "./commands/",
+  "hooks": "./hooks/hooks.json"
+}

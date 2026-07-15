@@ -1,0 +1,14 @@
+{
+  "name": "claude-sensors-marketplace",
+  "description": "Marketplace for claude-sensors — maintainability sensors for coding agents",
+  "owner": { "name": "Gustavo Costa" },
+  "plugins": [
+    {
+      "name": "claude-sensors",
+      "description": "Maintainability sensors sidecar: lint/type/test/coverage feedback wired into Claude Code hooks",
+      "version": "0.1.0",
+      "source": "./",
+      "author": { "name": "Gustavo Costa" }
+    }
+  ]
+}
