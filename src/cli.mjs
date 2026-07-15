@@ -70,6 +70,21 @@ async function main() {
     console.log(`${r.sensor}: ${r.status.toUpperCase()} (${r.detail})`);
     return;
   }
+  if (cmd === 'snapshot') {
+    const { runSnapshot } = await import('./commands/misc.mjs');
+    console.log(`Snapshot taken at ${runSnapshot(cwd).takenAt}`);
+    return;
+  }
+  if (cmd === 'status') {
+    const { runStatus } = await import('./commands/misc.mjs');
+    console.log(runStatus(cwd, { line: flags.has('line') }));
+    return;
+  }
+  if (cmd === 'history') {
+    const { runHistory } = await import('./commands/misc.mjs');
+    console.log(runHistory(cwd, positional[0] ?? null) || 'no history');
+    return;
+  }
   console.error(`Unknown command: ${cmd}`); // commands wired in later tasks
   process.exitCode = 1;
 }
